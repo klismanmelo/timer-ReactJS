@@ -7,8 +7,8 @@ import {
   StartCountdownButton,
   StopCountdownButton,
 } from './styles'
-import { NewCycleForm } from './NewCycleForm'
-import { Countdown } from './Countdown'
+import { NewCycleForm } from './components/NewCycleForm'
+import { Countdown } from './components/Countdown'
 import { useContext } from 'react'
 import { CycleContext } from '../../contexts/CyclesContext'
 
@@ -31,14 +31,20 @@ export function Home() {
     },
   })
 
-  const { handleSubmit, watch /* reset */ } = newCycleForm
+  const { handleSubmit, watch, reset } = newCycleForm
+
+  function handleCreateNewCycle(data: NewCycleFormData) {
+    createNewCycle(data)
+
+    reset()
+  }
 
   const task = watch('task')
   const isSubmitDisabled = !task
 
   return (
     <HomeContainer>
-      <form onSubmit={handleSubmit(createNewCycle)} action="">
+      <form onSubmit={handleSubmit(handleCreateNewCycle)} action="">
         <FormProvider {...newCycleForm}>
           <NewCycleForm />
         </FormProvider>
