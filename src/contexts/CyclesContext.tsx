@@ -27,11 +27,11 @@ interface CycleContextType {
 
 export const CycleContext = createContext({} as CycleContextType)
 
-interface CycleContextPRoviderProps {
+interface CycleContextProviderProps {
   children: ReactNode
 }
 
-export function CycleContextProvider({ children }: CycleContextPRoviderProps) {
+export function CycleContextProvider({ children }: CycleContextProviderProps) {
   const [cycles, setCycles] = useState<Cycle[]>([])
   const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
@@ -55,16 +55,17 @@ export function CycleContextProvider({ children }: CycleContextPRoviderProps) {
   }
 
   function createNewCycle(data: CreateCycleData) {
+    const id = String(new Date().getTime())
+
     const newCycle: Cycle = {
-      id: String(new Date().getTime()),
+      id,
       task: data.task,
       minutesAmount: data.minutesAmount,
       startDate: new Date(),
-      interruptDate: new Date(),
     }
 
-    setActiveCycleId(newCycle.id)
     setCycles((state) => [...state, newCycle])
+    setActiveCycleId(newCycle.id)
     setAmountSecondsPassed(0)
   }
 
